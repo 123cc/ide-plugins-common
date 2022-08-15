@@ -10,13 +10,13 @@ sourceCompatibility = 1.8
 repositories {
     mavenLocal()
     maven {
-        url "http://oss.jfrog.org/artifactory/libs-snapshot"
-        mavenContent {
-            snapshotsOnly()
-        }
+        url "https://releases.jfrog.io/artifactory/oss-releases"
     }
     maven {
-        url "http://oss.jfrog.org/artifactory/libs-release"
+        url "https://releases.jfrog.io/artifactory/oss-snapshots"
+    }
+    maven{
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
     }
 }
 
