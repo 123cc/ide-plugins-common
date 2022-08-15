@@ -126,6 +126,8 @@ public abstract class ScanManagerBase {
     }
 
     /**
+     * 递归提取， 所有 xray 选项
+     *
      * Recursively, extract all candidates for Xray scan.
      *
      * @param node       - In - The DependenciesTree root node.
@@ -149,31 +151,41 @@ public abstract class ScanManagerBase {
      * @param quickScan - Quick or full scan.
      */
     protected void scanAndCacheArtifacts(ProgressIndicator indicator, boolean quickScan) {
+        // 收集要扫描的组件
         // Collect components to scan
         Components componentsToScan = ComponentsFactory.create();
+        // 提取组件
         extractComponents(scanResults, componentsToScan, quickScan);
         if (componentsToScan.getComponentDetails().isEmpty()) {
+            // 未找到要扫描的组件
             // No components found to scan
             return;
         }
 
         try {
+            // 创建 xray client 并检查版本
             // Create Xray client and check version
             Xray xrayClient = XrayClient.create(xrayServerConfig.getUrl(), xrayServerConfig.getUsername(),
                     xrayServerConfig.getPassword(), xrayServerConfig.isNoHostVerification(),
                     xrayServerConfig.getKeyStoreProvider(), xrayServerConfig.getProxyConfForTargetUrl(""));
-            if (!isXrayVersionSupported(xrayClient)) {
-                return;
-            }
+            // 不经过 xray 进行漏洞扫描，不需要检查版本
+//            if (!isXrayVersionSupported(xrayClient)) {
+//                return;
+//            }
 
+            // 开始扫描
             // Start scan
             int currentIndex = 0;
             List<ComponentDetail> componentsList = Lists.newArrayList(componentsToScan.getComponentDetails());
+            // 组件详情集合 > （批量扫描数+当前值）
             while (currentIndex + NUMBER_OF_ARTIFACTS_BULK_SCAN < componentsList.size()) {
+                // 如何用户点击了取消按钮
                 checkCanceled();
                 List<ComponentDetail> partialComponentsDetails = componentsList.subList(currentIndex, currentIndex + NUMBER_OF_ARTIFACTS_BULK_SCAN);
                 Components partialComponents = ComponentsFactory.create(Sets.newHashSet(partialComponentsDetails));
+                //TODO 扫描组件
                 scanComponents(xrayClient, partialComponents);
+                //设置处理进度值
                 indicator.setFraction(((double) currentIndex + 1) / (double) componentsList.size());
                 currentIndex += NUMBER_OF_ARTIFACTS_BULK_SCAN;
             }
@@ -182,6 +194,7 @@ public abstract class ScanManagerBase {
             Components partialComponents = ComponentsFactory.create(Sets.newHashSet(partialComponentsDetails));
             scanComponents(xrayClient, partialComponents);
             indicator.setFraction(1);
+            //将缓存写入本地 文件
             scanCache.write();
         } catch (CancellationException e) {
             log.info("Xray scan was canceled");
@@ -213,7 +226,9 @@ public abstract class ScanManagerBase {
      * @throws IOException in case of connection issues.
      */
     private void scanComponents(Xray xrayClient, Components artifactsToScan) throws IOException {
+        // 请求 xray 服务获取扫描结果
         SummaryResponse scanResults = xrayClient.summary().component(artifactsToScan);
+        // 将结果添加至缓存
         // Add scan results to cache
         scanResults.getArtifacts().stream()
                 .filter(Objects::nonNull)
