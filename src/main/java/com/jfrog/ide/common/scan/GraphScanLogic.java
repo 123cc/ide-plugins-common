@@ -1,10 +1,13 @@
 package com.jfrog.ide.common.scan;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import com.jfrog.ide.common.configuration.ServerConfig;
 import com.jfrog.ide.common.log.ProgressIndicator;
 import com.jfrog.ide.common.persistency.ScanCache;
 import com.jfrog.xray.client.Xray;
+import com.jfrog.xray.client.impl.services.scan.GraphResponseImpl;
+import com.jfrog.xray.client.impl.util.ObjectMapperHelper;
 import com.jfrog.xray.client.services.scan.GraphResponse;
 import com.jfrog.xray.client.services.scan.XrayScanProgress;
 import com.jfrog.xray.client.services.system.Version;
@@ -16,6 +19,7 @@ import org.jfrog.build.extractor.scan.DependencyTree;
 import org.jfrog.build.extractor.scan.GeneralInfo;
 import org.jfrog.build.extractor.scan.License;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Objects;
@@ -69,9 +73,10 @@ public class GraphScanLogic implements ScanLogic {
         try {
             // Create Xray client and check version
             Xray xrayClient = createXrayClientBuilder(server, log).build();
-            if (!isSupportedInXrayVersion(xrayClient)) {
-                return false;
-            }
+            //检测版本
+//            if (!isSupportedInXrayVersion(xrayClient)) {
+//                return false;
+//            }
             // Start scan
             log.debug("Starting to scan, sending a dependency graph to Xray");
             checkCanceled.run();
@@ -164,6 +169,8 @@ public class GraphScanLogic implements ScanLogic {
         return false;
     }
 
+
+    private static final ObjectMapper mapper = ObjectMapperHelper.get();
     /**
      * Xray scan a graph of components.
      * A scan with project key may produce a list of licenses and a list of violated licenses and violated vulnerabilities.
@@ -180,7 +187,8 @@ public class GraphScanLogic implements ScanLogic {
     private void scanAndCache(Xray xrayClient, DependencyTree artifactsToScan, ServerConfig server, Runnable checkCanceled, ProgressIndicator indicator) throws IOException, InterruptedException {
         String projectKey = server.getPolicyType() == ServerConfig.PolicyType.PROJECT ? server.getProject() : "";
         String[] watches = server.getPolicyType() == ServerConfig.PolicyType.WATCHES ? split(server.getWatches(), ",") : null;
-        GraphResponse scanResults = xrayClient.scan().graph(artifactsToScan, new XrayScanProgressImpl(indicator), checkCanceled, projectKey, watches);
+//        GraphResponse scanResults = xrayClient.scan().graph(artifactsToScan, new XrayScanProgressImpl(indicator), checkCanceled, projectKey, watches);
+        GraphResponse scanResults =  mapper.readValue(new File("D:\\work\\ide-plugins-common\\src\\main\\resources\\scanResponse.json"), GraphResponseImpl.class);
 
         // Add licenses to all components
         emptyIfNull(scanResults.getLicenses()).stream()
