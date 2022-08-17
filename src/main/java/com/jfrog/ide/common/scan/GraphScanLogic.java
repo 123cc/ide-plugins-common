@@ -63,7 +63,9 @@ public class GraphScanLogic implements ScanLogic {
     public boolean scanAndCacheArtifacts(ServerConfig server, ProgressIndicator indicator, boolean quickScan, ComponentPrefix prefix, Runnable checkCanceled) throws IOException, InterruptedException {
         // Xray's graph scan API does not support progress indication currently.
         indicator.setIndeterminate(true);
+        //设置所有组件包前缀
         scanResults.setPrefix(prefix.toString());
+        // 获取要扫描的组件， 版本不变 或 触发方式 满足 条件才会扫描
         DependencyTree nodesToScan = createScanTree(scanResults, quickScan);
         if (nodesToScan.isLeaf()) {
             log.debug("No components found to scan.");
@@ -80,6 +82,7 @@ public class GraphScanLogic implements ScanLogic {
             // Start scan
             log.debug("Starting to scan, sending a dependency graph to Xray");
             checkCanceled.run();
+
             scanAndCache(xrayClient, nodesToScan, server, checkCanceled, indicator);
 
             indicator.setFraction(1);
