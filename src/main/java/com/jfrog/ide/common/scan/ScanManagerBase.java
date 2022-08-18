@@ -57,6 +57,7 @@ public abstract class ScanManagerBase {
         if (scanArtifact != null) {
             node.setIssues(Sets.newHashSet(scanArtifact.getIssues()));
             node.setLicenses(Sets.newHashSet(scanArtifact.getLicenses()));
+            node.setRecommendVersion(scanArtifact.getRecommendVersion());
             if (node.getGeneralInfo() == null) {
                 node.setGeneralInfo(scanArtifact.getGeneralInfo());
             }

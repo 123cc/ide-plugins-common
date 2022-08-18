@@ -190,8 +190,7 @@ public class GraphScanLogic implements ScanLogic {
     private void scanAndCache(Xray xrayClient, DependencyTree artifactsToScan, ServerConfig server, Runnable checkCanceled, ProgressIndicator indicator) throws IOException, InterruptedException {
         String projectKey = server.getPolicyType() == ServerConfig.PolicyType.PROJECT ? server.getProject() : "";
         String[] watches = server.getPolicyType() == ServerConfig.PolicyType.WATCHES ? split(server.getWatches(), ",") : null;
-//        GraphResponse scanResults = xrayClient.scan().graph(artifactsToScan, new XrayScanProgressImpl(indicator), checkCanceled, projectKey, watches);
-        GraphResponse scanResults =  mapper.readValue(new File("D:\\work\\ide-plugins-common\\src\\main\\resources\\scanResponse.json"), GraphResponseImpl.class);
+        GraphResponse scanResults = xrayClient.scan().graph(artifactsToScan, new XrayScanProgressImpl(indicator), checkCanceled, projectKey, watches);
 
         // Add licenses to all components
         emptyIfNull(scanResults.getLicenses()).stream()

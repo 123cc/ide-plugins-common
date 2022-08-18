@@ -85,12 +85,13 @@ public abstract class ScanCache {
                 // We should override existing info, in case of forced scan.
                 issues.remove(issue);
                 issues.add(issue);
-                artifact.setIssues(issues);
+                artifact.setRecommendVersion(vulnerability.getRecommendVersion());
                 continue;
             }
             // If not exist, creates a new data object.
             GeneralInfo info = new GeneralInfo(id, component.getImpactPaths().get(0).get(0).getFullPath(), "");
             Artifact artifact = new Artifact(info, Sets.newHashSet(issue), new HashSet<>());
+            artifact.setRecommendVersion(vulnerability.getRecommendVersion());
             add(artifact);
         }
     }
