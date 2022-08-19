@@ -1,0 +1,22 @@
+{
+  "code":1,
+  "message":"SUCCESS",
+  "data":{
+    "name":"fastjson",
+    "versionNo":"1.2.80",
+    "level":1,
+    "updateTime":"2014-10-13",
+    "licenseName":"",
+    "vulnerabilityMap":{
+      "1":"2",
+      "2":"1",
+      "8":"1"
+    },
+    "recommendVersion":{
+      "gav":"com.alibaba:fastjson:2.0.1"
+    },
+    "otherVersion":{
+      "gav":"com.alibaba:fastjson:1.2.83"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "vulnerabilities": [
+    {
+      "severity": "Medium",
+      "components": {
+        "gav://io.netty:netty-codec-http:4.1.31.Final": {
+        }
+      },
+      "issue_id": "XRAY-191882"
+    },
+    {
+      "severity": "Critical",
+      "components": {
+        "gav://io.netty:netty-codec-http:4.1.31.Final": {
+        }
+      },
+      "issue_id": "XRAY-94201"
+    },
+    {
+      "severity": "Critical",
+      "components": {
+        "gav://io.netty:netty-transport:4.1.59.Final": {
+          "impact_paths": [
+            [
+              {
+                "component_id": "test"
+              },
+              {
+                "component_id": "gav://io.netty:netty-codec-http:4.1.31.Final"
+              }
+            ]
+          ]
+        }
+      },
+      "issue_id": "XRAY-94202"
+    }
+  ]
+}

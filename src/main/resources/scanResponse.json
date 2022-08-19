@@ -1,0 +1,22 @@
+{
+  "vulnerabilities": [
+    {
+      "severity": "Medium",
+      "recommendVersion": "io.netty:netty-codec-http:4.1.71.Final",
+      "components": {
+        "gav://io.netty:netty-codec-http:4.1.31.Final": {
+        }
+      },
+      "issue_id": "XRAY-191882"
+    },
+    {
+      "severity": "Critical",
+      "recommendVersion": "io.netty:netty-codec-http:4.1.71.Final",
+      "components": {
+        "gav://io.netty:netty-codec-http:4.1.31.Final": {
+        }
+      },
+      "issue_id": "XRAY-94201"
+    }
+  ]
+}
