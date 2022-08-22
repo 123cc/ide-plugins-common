@@ -1,0 +1,28 @@
+{
+  "artifacts": [
+    {
+      "general": {
+        "name": "org.apache.commons:commons-lang3",
+        "component_id": "org.apache.commons:commons-lang3:3.12.0",
+        "pkg_type": "maven"
+      },
+      "issues": [],
+      "licenses": []
+    },
+    {
+      "general": {
+        "name": "io.netty:netty-codec-http",
+        "component_id": "io.netty:netty-codec-http:4.1.31.Final",
+        "pkg_type": "maven"
+      },
+      "recommendVersion": "io.netty:netty-codec-http:4.1.71.Final",
+      "issues": [
+        {
+          "issue_id": "XRAY-94201",
+          "severity": "Critical"
+        }
+      ],
+      "licenses": []
+    }
+  ]
+}

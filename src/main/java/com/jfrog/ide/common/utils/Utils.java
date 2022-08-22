@@ -56,6 +56,7 @@ public class Utils {
         artifact.setGeneralInfo(getGeneralInfo(other.getGeneral()));
         Set<Issue> issues = other.getIssues().stream().map(Utils::toIssue).collect(Collectors.toSet());
         Set<License> licenses = other.getLicenses().stream().map(Utils::toLicense).collect(Collectors.toSet());
+        artifact.setRecommendVersion(other.getRecommendVersion());
         artifact.setIssues(issues);
         artifact.setLicenses(licenses);
         return artifact;

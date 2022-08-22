@@ -21,10 +21,17 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.jfrog.buildinfo', name: 'build-info-extractor-go', version: '2.16.1'
-    compile group: 'org.jfrog.buildinfo', name: 'build-info-extractor-npm', version: '2.16.1'
+    compile ('org.jfrog.buildinfo:build-info-extractor-go:2.16.1'){
+        exclude module: "build-info-extractor"
+    }
+    compile ('org.jfrog.buildinfo:build-info-extractor-npm:2.16.1'){
+        exclude module: "build-info-extractor"
+    }
+    compile group: 'org.jfrog.buildinfo', name: 'build-info-api', version: '2.16.1'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
-    compile group: 'com.jfrog.xray.client', name: 'xray-client-java', version: '0.5.0'
+//    compile group: 'com.jfrog.xray.client', name: 'xray-client-java', version: '0.5.0'
+    compile files("lib/build-info-extractor-2.16.1.jar")
+    compile group: 'org.jfrog.common', name: 'jfrog-http-client', version: '3.8.0'
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
