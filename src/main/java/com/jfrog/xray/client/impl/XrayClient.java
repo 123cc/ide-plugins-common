@@ -22,6 +22,7 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -104,6 +105,17 @@ public class XrayClient extends PreemptiveHttpClient implements Xray {
         postRequest.setEntity(requestEntity);
         return setHeadersAndExecute(postRequest);
     }
+
+
+    public CloseableHttpResponse postStringEntity(String uri, Object payload, ObjectMapper mapper) throws IOException {
+        HttpPost postRequest = new HttpPost(createUrl(uri));
+        String body = mapper.writeValueAsString(payload);
+        log.debug("POST " + postRequest.getURI() + "\n" + body);
+        HttpEntity requestEntity = new StringEntity(body,ContentType.APPLICATION_JSON);
+        postRequest.setEntity(requestEntity);
+        return setHeadersAndExecute(postRequest);
+    }
+
 
 
     public CloseableHttpResponse postAndHeader(String uri, Object payload, ObjectMapper mapper) throws IOException {

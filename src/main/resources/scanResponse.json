@@ -1,20 +1,34 @@
 {
   "vulnerabilities": [
     {
-      "severity": "Medium",
+      "severity": "Critical",
       "recommendVersion": "io.netty:netty-codec-http:4.1.71.Final",
       "components": {
-        "gav://io.netty:netty-codec-http:4.1.31.Final": {
-        }
+        "gav://io.netty:netty-codec-http:4.1.31.Final": {}
       },
       "issue_id": "XRAY-191882"
     },
     {
-      "severity": "Critical",
-      "recommendVersion": "io.netty:netty-codec-http:4.1.71.Final",
+      "severity": "High",
+      "recommendVersion": "org.mockito:mockito-inline:4.5.0",
       "components": {
-        "gav://io.netty:netty-codec-http:4.1.31.Final": {
-        }
+        "gav://org.mockito:mockito-inline:4.2.0": {}
+      },
+      "issue_id": "XRAY-94201"
+    },
+    {
+      "severity": "Critical",
+      "recommendVersion": "com.alibaba:fastjson:1.2.83",
+      "components": {
+        "gav://com.alibaba:fastjson:1.2.75": {}
+      },
+      "issue_id": "XRAY-94201"
+    },
+    {
+      "severity": "Critical",
+      "recommendVersion": "org.junit.jupiter:junit-jupiter-api:5.9.0",
+      "components": {
+        "gav://org.junit.jupiter:junit-jupiter-api:5.7.1": {}
       },
       "issue_id": "XRAY-94201"
     }

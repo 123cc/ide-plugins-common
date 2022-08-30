@@ -10,8 +10,6 @@ import com.jfrog.xray.client.impl.util.ObjectMapperHelper;
 import com.jfrog.xray.client.services.scan.GraphResponse;
 import com.jfrog.xray.client.services.scan.Scan;
 import com.jfrog.xray.client.services.scan.XrayScanProgress;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -19,7 +17,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.jfrog.build.extractor.scan.DependencyTree;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -40,7 +37,7 @@ public class ScanImpl implements Scan {
         ObjectMapper mapper = ObjectMapperHelper.get();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         FilterProvider filters = new SimpleFilterProvider().setFailOnUnknownId(false)
-                .addFilter("xray-graph-filter", SimpleBeanPropertyFilter.filterOutAllExcept("component_id", "nodes"));
+                .addFilter("xray-graph-filter", SimpleBeanPropertyFilter.filterOutAllExcept("component_id", "nodes","component","version"));
         mapper.setFilterProvider(filters);
         return mapper;
     }
@@ -61,19 +58,20 @@ public class ScanImpl implements Scan {
     @Override
     public GraphResponse graph(DependencyTree dependencies, XrayScanProgress progress, Runnable checkCanceled) throws IOException, InterruptedException {
         if (dependencies == null) {
+            System.out.println();
             return new GraphResponseImpl();
         }
         //原始逻辑
         //return this.post("", dependencies, progress, checkCanceled);
-        return mapper.readValue(new File("D:\\work\\ide-plugins-common\\src\\main\\resources\\scanResponse.json"), GraphResponseImpl.class);
-//        return this.postQiAn("", dependencies, progress, checkCanceled);
+        //return mapper.readValue(new File("D:\\work\\ide-plugins-common\\src\\main\\resources\\scanResponse.json"), GraphResponseImpl.class);
+        return this.postQiAn("", dependencies, progress, checkCanceled);
     }
 
 
     private GraphResponse postQiAn(String params, Object body, XrayScanProgress progress, Runnable checkCanceled) throws IOException, InterruptedException {
         HttpEntity entity = null;
         // First, request a scan from Xray.
-        try (CloseableHttpResponse res = xray.post("/open-api/v3/accurate/check" + params, body, mapper)) {
+        try (CloseableHttpResponse res = xray.postStringEntity("/scan/black" + params, body, mapper)) {
             checkCanceled.run();
             StatusLine statusLine = res.getStatusLine();
             int statusCode = statusLine.getStatusCode();

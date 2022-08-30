@@ -62,7 +62,9 @@ public class XrayConnectionUtils {
 
     public static XrayClientBuilder createXrayClientBuilder(ServerConfig serverConfig, Log logger) {
         return (XrayClientBuilder) new XrayClientBuilder()
-                .setUrl(serverConfig.getXrayUrl())
+                //配置地址 默认会添加  /xray 路劲，不需要
+                //.setUrl(serverConfig.getXrayUrl())
+                .setUrl(serverConfig.getUrl())
                 .setUserName(serverConfig.getUsername())
                 .setPassword(serverConfig.getPassword())
                 .setAccessToken(serverConfig.getAccessToken())

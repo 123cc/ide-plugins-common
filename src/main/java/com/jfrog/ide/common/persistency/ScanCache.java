@@ -89,7 +89,8 @@ public abstract class ScanCache {
                 continue;
             }
             // If not exist, creates a new data object.
-            GeneralInfo info = new GeneralInfo(id, component.getImpactPaths().get(0).get(0).getFullPath(), "");
+//            GeneralInfo info = new GeneralInfo(id, component.getImpactPaths().get(0).get(0).getFullPath(), "");
+            GeneralInfo info = new GeneralInfo(id, "", "");
             Artifact artifact = new Artifact(info, Sets.newHashSet(issue), new HashSet<>());
             artifact.setRecommendVersion(vulnerability.getRecommendVersion());
             add(artifact);
