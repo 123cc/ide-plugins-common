@@ -74,4 +74,6 @@ public interface ServerConfig {
     default boolean areCredentialsSet() {
         return isNoneBlank(getUsername(), getPassword()) && !isAllBlank(getUrl(), getXrayUrl(), getArtifactoryUrl());
     }
+
+    boolean enableLocalCacheArtifact();
 }

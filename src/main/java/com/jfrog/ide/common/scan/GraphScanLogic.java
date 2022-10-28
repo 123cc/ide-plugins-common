@@ -6,20 +6,19 @@ import com.jfrog.ide.common.configuration.ServerConfig;
 import com.jfrog.ide.common.log.ProgressIndicator;
 import com.jfrog.ide.common.persistency.ScanCache;
 import com.jfrog.xray.client.Xray;
-import com.jfrog.xray.client.impl.services.scan.GraphResponseImpl;
 import com.jfrog.xray.client.impl.util.ObjectMapperHelper;
 import com.jfrog.xray.client.services.scan.GraphResponse;
 import com.jfrog.xray.client.services.scan.XrayScanProgress;
 import com.jfrog.xray.client.services.system.Version;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.jfrog.build.api.util.Log;
 import org.jfrog.build.extractor.scan.Artifact;
 import org.jfrog.build.extractor.scan.DependencyTree;
 import org.jfrog.build.extractor.scan.GeneralInfo;
 import org.jfrog.build.extractor.scan.License;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Objects;
@@ -210,6 +209,11 @@ public class GraphScanLogic implements ScanLogic {
                 .filter(Objects::nonNull)
                 .filter(vulnerability -> vulnerability.getComponents() != null)
                 .forEach(vulnerability -> scanCache.add(vulnerability));
+        //返回结果没有黑名单，并且开启本地缓存，则不清楚 直接引用以外存在漏洞的组件
+        if(CollectionUtils.isEmpty(scanResults.getVulnerabilities()) &&  !server.enableLocalCacheArtifact()){
+            scanCache.removeSafetyComponent(this.scanResults);
+        }
+
     }
 
     /**

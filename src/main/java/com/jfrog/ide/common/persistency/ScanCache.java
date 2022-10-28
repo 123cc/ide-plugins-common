@@ -112,4 +112,8 @@ public abstract class ScanCache {
     void setScanCacheMap(ScanCacheMap scanCacheMap) {
         this.scanCacheMap = scanCacheMap;
     }
+
+    public void removeSafetyComponent(DependencyTree scanResults){
+        this.scanCacheMap.remove(scanResults);
+    }
 }

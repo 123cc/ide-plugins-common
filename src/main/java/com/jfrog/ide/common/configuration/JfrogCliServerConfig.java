@@ -102,6 +102,11 @@ public class JfrogCliServerConfig implements ServerConfig {
         return 0;
     }
 
+    @Override
+    public boolean enableLocalCacheArtifact() {
+        return false;
+    }
+
     private String getValueFromJson(String fieldName) {
         return serverConfig.get(fieldName) != null ? serverConfig.get(fieldName).asText() : "";
     }
