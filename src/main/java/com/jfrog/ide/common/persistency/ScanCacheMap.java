@@ -12,9 +12,8 @@ import org.jfrog.build.extractor.scan.DependencyTree;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.jfrog.ide.common.utils.Utils.createMapper;
 
@@ -95,13 +94,14 @@ abstract class ScanCacheMap {
     }
 
     void remove(DependencyTree scanResults){
-        Iterator var4 = scanResults.getChildren().iterator();
-        while (var4.hasNext()){
-            DependencyTree child = (DependencyTree) var4.next();
-            String childFullId = child.toString();
-            if(!this.contains(childFullId)){
-                artifactsMap.remove(childFullId);
+        Iterator cache = artifactsMap.entrySet().iterator();
+        List<String> component = scanResults.getChildren().stream().map(DependencyTree::toString).collect(Collectors.toList());
+        while (cache.hasNext()){
+            Map.Entry e = (Map.Entry) cache.next();
+            if (!component.contains(e.getKey())) {
+                cache.remove();
             }
+
         }
     }
 
